@@ -5,20 +5,24 @@
 // Access-Control-Allow-Origin: https://developer.mozilla.org
 function getInfo(username){
 axios.get(`https://api.github.com/users/${username}`)
-  .then(response1=>{
+  .then(response=>{
     // console.log(res)
     
-    cards.appendChild(cardCreator(response1))
-    return axios.get(res.data.followers_url)
+    cards.appendChild(cardCreator(response))
+    return axios.get(response.data.followers_url)
   .then(response2 =>{
-    cards.appendChild(cardCreator(response2))
+    console.log(response2)
+    response2.data.forEach(item=> axios.get(item.url)
+                                  .then(res3=>{
+                                    cards.appendChild(cardCreator(res3))
+                                  }))
     
   })
       
     
   })
   .catch(
-    faided=>{}
+    // failed=>{}
   )
 }
 
@@ -35,7 +39,7 @@ axios.get(`https://api.github.com/users/${username}`)
 let cards = document.querySelector('.cards')
 
 const followersArray = [];
-
+// function followerCreator()
 function cardCreator(obj){
   let cardParent = document.createElement('div');
   let cardImg = document.createElement('img');
