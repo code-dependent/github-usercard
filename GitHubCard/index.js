@@ -2,7 +2,14 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
-
+function getInfo(username){
+axios.get(`https://api.github.com/users/${username}`)
+  .then(res=>{
+    return cards.appendChild(cardCreator(res))
+    
+  })
+  .catch()
+}
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -13,6 +20,7 @@
 /* Step 4: Pass the data received from Github into your function, 
            create a new component and add it to the DOM as a child of .cards
 */
+let cards = document.querySelector('.cards')
 
 /* Step 5: Now that you have your own card getting added to the DOM, either 
           follow this link in your browser https://api.github.com/users/<Your github name>/followers 
@@ -28,7 +36,69 @@ const followersArray = [];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
+*/function cardCreator(obj){
+  let cardParent = document.createElement('div');
+  let cardImg = document.createElement('img');
+  let info = document.createElement('div');
+  let name = document.createElement('h3');
+  let username = document.createElement('p');
+  let geo = document.createElement('p');
+  let profile = document.createElement('p');
+  let followers = document.createElement('p');
+  let following = document.createElement('p');
+  let bio = document.createElement('p');
+  let pageUrl = document.createElement('a');
 
+  // Add structure
+  // profile.appendChild(pageUrl)
+  info.appendChild(name)
+  info.appendChild(username)
+  info.appendChild(geo)
+  info.appendChild(profile)
+  info.appendChild(followers)
+  info.appendChild(following)
+  info.appendChild(bio)
+
+  profile.appendChild(pageUrl)
+
+  cardParent.appendChild(cardImg)
+  cardParent.appendChild(info)
+  
+  
+  // Add content
+  cardImg.src = obj.data['avatar_url']
+  cardImg.alt = obj.data['name']
+  name.textContent = obj.data['name']
+  username.textContent = obj.data.login
+  geo.textContent = obj.data.location
+  profile.textContent = `Profile: `
+  pageUrl.textContent = obj.data['html_url']
+  pageUrl.href = obj.data['html_url']
+  followers.textContent = `Followers: ${obj.data.followers}`
+  following.textContent = `Following: ${obj.data.following}`
+  bio.textContent = obj.data.bio
+  cardParent.classList.add('card')
+  info.classList.add('card-info')
+  name.classList.add('name')
+  username.classList.add('username')
+  profile.appendChild(pageUrl)
+
+
+
+
+
+  return cardParent
+
+}
+let list = ['code-dependent',
+            'tetondan',
+            'dustinmyers',
+            'justsml',
+            'luishrd',
+            'bigknell']
+  list.forEach(username=>getInfo(username))
+  // getInfo()
+/*
 <div class="card">
   <img src={image url of user} />
   <div class="card-info">
