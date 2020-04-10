@@ -2,15 +2,24 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
+// Access-Control-Allow-Origin: https://developer.mozilla.org
 function getInfo(username){
 axios.get(`https://api.github.com/users/${username}`)
-  .then(res=>{
+  .then(response1=>{
     // console.log(res)
     
-    return cards.appendChild(cardCreator(res))
+    cards.appendChild(cardCreator(response1))
+    return axios.get(res.data.followers_url)
+  .then(response2 =>{
+    cards.appendChild(cardCreator(response2))
     
   })
-  .catch()
+      
+    
+  })
+  .catch(
+    faided=>{}
+  )
 }
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -82,13 +91,15 @@ function cardCreator(obj){
   return cardParent
 
 }
-let list = ['code-dependent',
-            'tetondan',
-            'dustinmyers',
+let list = ['NomadDaniel',
+            'galfarotolon',
+            'ernienettles',
             'justsml',
             'luishrd',
             'bigknell']
-  list.forEach(username=>getInfo(username))
+  // list.forEach(username=>getInfo(username))
+  getInfo('code-dependent')
+
   // getInfo()
 /*
 <div class="card">
